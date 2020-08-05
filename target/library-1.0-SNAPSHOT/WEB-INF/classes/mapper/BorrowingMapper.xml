@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hqyj.mapper.BorrowingMapper" >
+  <resultMap id="BaseResultMap" type="com.hqyj.pojo.Borrowing" >
+    <id column="b_id" property="bId" jdbcType="INTEGER" />
+    <result column="r_id" property="rId" jdbcType="INTEGER" />
+    <result column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="b_time" property="bTime" jdbcType="TIMESTAMP" />
+    <result column="b_rtime" property="bRtime" jdbcType="TIMESTAMP" />
+    <result column="b_limit" property="bLimit" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    b_id, r_id, t_id, b_time, b_rtime, b_limit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from borrowing
+    where b_id = #{bId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from borrowing
+    where b_id = #{bId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hqyj.pojo.Borrowing" >
+    insert into borrowing (b_id, r_id, t_id, 
+      b_time, b_rtime, b_limit
+      )
+    values (#{bId,jdbcType=INTEGER}, #{rId,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, 
+      #{bTime,jdbcType=TIMESTAMP}, #{bRtime,jdbcType=TIMESTAMP}, #{bLimit,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hqyj.pojo.Borrowing" >
+    insert into borrowing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bId != null" >
+        b_id,
+      </if>
+      <if test="rId != null" >
+        r_id,
+      </if>
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="bTime != null" >
+        b_time,
+      </if>
+      <if test="bRtime != null" >
+        b_rtime,
+      </if>
+      <if test="bLimit != null" >
+        b_limit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bId != null" >
+        #{bId,jdbcType=INTEGER},
+      </if>
+      <if test="rId != null" >
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="bTime != null" >
+        #{bTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bRtime != null" >
+        #{bRtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bLimit != null" >
+        #{bLimit,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hqyj.pojo.Borrowing" >
+    update borrowing
+    <set >
+      <if test="rId != null" >
+        r_id = #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="tId != null" >
+        t_id = #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="bTime != null" >
+        b_time = #{bTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bRtime != null" >
+        b_rtime = #{bRtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bLimit != null" >
+        b_limit = #{bLimit,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where b_id = #{bId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hqyj.pojo.Borrowing" >
+    update borrowing
+    set r_id = #{rId,jdbcType=INTEGER},
+      t_id = #{tId,jdbcType=INTEGER},
+      b_time = #{bTime,jdbcType=TIMESTAMP},
+      b_rtime = #{bRtime,jdbcType=TIMESTAMP},
+      b_limit = #{bLimit,jdbcType=TIMESTAMP}
+    where b_id = #{bId,jdbcType=INTEGER}
+  </update>
+</mapper>
