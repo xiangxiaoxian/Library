@@ -8,12 +8,31 @@
     <result column="b_time" property="bTime" jdbcType="TIMESTAMP" />
     <result column="b_rtime" property="bRtime" jdbcType="TIMESTAMP" />
     <result column="b_limit" property="bLimit" jdbcType="TIMESTAMP" />
+    <association property="book" javaType="com.hqyj.pojo.Book">
+      <id column="t_id" property="tId" jdbcType="INTEGER" />
+      <result column="t_name" property="tName" jdbcType="VARCHAR" />
+      <result column="t_author" property="tAuthor" jdbcType="VARCHAR" />
+      <result column="t_press" property="tPress" jdbcType="VARCHAR" />
+      <result column="t_publication" property="tPublication" jdbcType="TIMESTAMP" />
+      <result column="t_inventory" property="tInventory" jdbcType="INTEGER" />
+    </association>
+    <association property="reader" javaType="com.hqyj.pojo.Reader">
+      <id column="r_id" property="rId" jdbcType="INTEGER" />
+      <result column="r_name" property="rName" jdbcType="VARCHAR" />
+      <result column="r_password" property="rPassword" jdbcType="VARCHAR" />
+      <result column="r_sex" property="rSex" jdbcType="VARCHAR" />
+      <result column="r_birthday" property="rBirthday" jdbcType="TIMESTAMP" />
+      <result column="r_contact" property="rContact" jdbcType="VARCHAR" />
+      <result column="r_email" property="rEmail" jdbcType="VARCHAR" />
+      <result column="r_credibility" property="rCredibility" jdbcType="INTEGER" />
+      <result column="r_number" property="rNumber" jdbcType="INTEGER" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List" >
     b_id, r_id, t_id, b_time, b_rtime, b_limit
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from borrowing
     where b_id = #{bId,jdbcType=INTEGER}
@@ -23,52 +42,52 @@
     where b_id = #{bId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hqyj.pojo.Borrowing" >
-    insert into borrowing (b_id, r_id, t_id, 
+    insert into borrowing (b_id, r_id, t_id,
       b_time, b_rtime, b_limit
       )
-    values (#{bId,jdbcType=INTEGER}, #{rId,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, 
+    values (#{bId,jdbcType=INTEGER}, #{rId,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER},
       #{bTime,jdbcType=TIMESTAMP}, #{bRtime,jdbcType=TIMESTAMP}, #{bLimit,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hqyj.pojo.Borrowing" >
     insert into borrowing
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="bId != null" >
+      <if test="bId != null and bId !=''" >
         b_id,
       </if>
-      <if test="rId != null" >
+      <if test="rId != null and rId !=''" >
         r_id,
       </if>
-      <if test="tId != null" >
+      <if test="tId != null and tId !=''" >
         t_id,
       </if>
-      <if test="bTime != null" >
+      <if test="bTime != null and bTime !=''" >
         b_time,
       </if>
-      <if test="bRtime != null" >
+      <if test="bRtime != null and bRtime !=''" >
         b_rtime,
       </if>
-      <if test="bLimit != null" >
+      <if test="bLimit != null and bLimit !=''" >
         b_limit,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="bId != null" >
+      <if test="bId != null and bId !=''" >
         #{bId,jdbcType=INTEGER},
       </if>
-      <if test="rId != null" >
+      <if test="rId != null and rId !=''" >
         #{rId,jdbcType=INTEGER},
       </if>
-      <if test="tId != null" >
+      <if test="tId != null and tId !=''" >
         #{tId,jdbcType=INTEGER},
       </if>
-      <if test="bTime != null" >
+      <if test="bTime != null and bTime !=''" >
         #{bTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bRtime != null" >
+      <if test="bRtime != null and bRtime !=''" >
         #{bRtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bLimit != null" >
+      <if test="bLimit != null and bLimit !=''" >
         #{bLimit,jdbcType=TIMESTAMP},
       </if>
     </trim>
@@ -76,19 +95,19 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hqyj.pojo.Borrowing" >
     update borrowing
     <set >
-      <if test="rId != null" >
+      <if test="rId != null  and rId !=''" >
         r_id = #{rId,jdbcType=INTEGER},
       </if>
-      <if test="tId != null" >
+      <if test="tId != null and tId !=''" >
         t_id = #{tId,jdbcType=INTEGER},
       </if>
-      <if test="bTime != null" >
+      <if test="bTime != null and bTime !=''" >
         b_time = #{bTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bRtime != null" >
+      <if test="bRtime != null and bRtime !=''" >
         b_rtime = #{bRtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bLimit != null" >
+      <if test="bLimit != null and bLimit !=''" >
         b_limit = #{bLimit,jdbcType=TIMESTAMP},
       </if>
     </set>
@@ -103,4 +122,32 @@
       b_limit = #{bLimit,jdbcType=TIMESTAMP}
     where b_id = #{bId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBwBookByrId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT b.*,bw.* FROM reader r
+    INNER JOIN borrowing bw ON bw.r_id = r.r_id
+    INNER JOIN book b ON b.t_id = bw.t_id
+    WHERE r.r_id=#{tId} and bw.b_rtime is NULL
+  </select>
+  <select id="selectBwBookByrIdjl" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT b.*,bw.* FROM reader r
+    INNER JOIN borrowing bw ON bw.r_id = r.r_id
+    INNER JOIN book b ON b.t_id = bw.t_id
+    WHERE r.r_id=#{tId} and bw.b_rtime is Not NULL
+  </select>
+  <!--批量删除-->
+  <delete id="delall">
+    delete from borrowing
+    <trim prefix=" where">
+      b_id in (
+      <foreach collection="list" item="x" separator=",">
+        #{x}
+      </foreach>
+      )
+    </trim>
+  </delete>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hqyj.pojo.Borrowing">
+    select bw.b_id,r.r_name,bw.b_time,bw.b_rtime,bw.b_limit,r.r_email from borrowing bw INNER JOIN reader r on bw.r_id=r.r_id
+    where bw.b_rtime is  NULL
+  </select>
 </mapper>

@@ -76,7 +76,7 @@
 				</dl></li>
 		</ul> -->
 		<ul class="layui-nav right">
-			<li class="layui-nav-item"><a href="javascript:;">${rName}</a>
+			<li class="layui-nav-item"><a href="javascript:;">${NAME}</a>
 				<dl class="layui-nav-child">
 					<!-- 二级菜单 -->
 					<dd>
@@ -110,8 +110,8 @@
 						<li><a _href="${pageContext.request.contextPath}/rc/userList.do"> <i
 								class="iconfont">&#xe6a7;</i> <cite>用户信息查询</cite>
 						</a></li>
-						<li><a _href="manageEmeController/toDepartList.do"> <i
-								class="iconfont">&#xe6a7;</i> <cite>部门管理</cite>
+						<li><a _href="${pageContext.request.contextPath}/brc/BorrowingList.do"> <i
+								class="iconfont">&#xe6a7;</i> <cite>借阅管理</cite>
 						</a></li>
 					</ul></li>
 				</shiro:hasRole>
@@ -140,9 +140,11 @@
 						class="iconfont nav_right">&#xe697;</i>
 				</a>
 					<ul class="sub-menu">
-						<li><a _href="propertyController/showAllProperty.do"> <i class="iconfont">&#xe6a7;</i> <cite>图书借阅</cite>
+						<li><a _href="${pageContext.request.contextPath}/bc/bookLists.do"> <i class="iconfont">&#xe6a7;</i> <cite>图书借阅</cite>
 						</a></li>
-						<li><a _href="propertyController/showBorrowreturn.do"> <i class="iconfont">&#xe6a7;</i> <cite>资料信息</cite>
+						<li><a _href="${pageContext.request.contextPath}/rc/rx.do"> <i class="iconfont">&#xe6a7;</i> <cite>资料信息</cite>
+						</a></li>
+						<li><a _href="${pageContext.request.contextPath}/rc/bookBw.do"> <i class="iconfont">&#xe6a7;</i> <cite>借阅记录</cite>
 						</a></li>
 					</ul></li>
 

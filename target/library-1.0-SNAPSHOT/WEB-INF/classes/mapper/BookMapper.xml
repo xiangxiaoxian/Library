@@ -109,11 +109,17 @@
     from book
     <trim prefix="where" suffix=" " suffixOverrides="and">
       <if test="tName!=null and tName!='' and tName!='null'">
-        t_name = #{tName,jdbcType=VARCHAR} and
+        t_name like concat(concat('%',#{tName,jdbcType=VARCHAR}),'%') and
       </if>
       <if test="tAuthor!=null and tAuthor!='' and tAuthor!='null'">
-        t_author= #{tAuthor,jdbcType=VARCHAR} and
+        t_author like concat(concat('%',#{tAuthor,jdbcType=VARCHAR}),'%') and
       </if>
     </trim>
+  </select>
+  <select id="selectByPa" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where t_id like #{s} or t_name like #{s} or t_author like #{s} or t_press like #{s}
   </select>
 </mapper>

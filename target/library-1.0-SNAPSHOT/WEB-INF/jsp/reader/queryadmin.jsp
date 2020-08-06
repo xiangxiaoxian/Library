@@ -53,8 +53,7 @@
                     <div class="button-group">
                         <a class="button border-red" href="${pageContext.request.contextPath}/rc/cancel.do?rId=${x.rId}">
                             <span class="icon-edit" ></span> 取消管理员</a>
-                        <a class="button border-blue" href="${pageContext.request.contextPath}/rc/setper.do?rId=${x.rId}">
-                            <span class="icon-wrench" ></span> 设置权限</a>
+
                     </div>
                 </td>
             </tr>
