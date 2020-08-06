@@ -24,11 +24,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <h3>Register</h3>
             <div class="agile-info_w3ls_grid">
                 <form action="#" method="post">
-                    <input type="text" name="rName" placeholder="Name" required=" ">
-                    <input type="password" name="rPassword" placeholder="Password" required=" ">
-                    <input type="password" name="rPassword" placeholder="Confirm Password" required=" ">
+                    <input type="text" name="rName" placeholder="Name" id="rName" required=" ">
+                    <input type="password" name="rPassword" placeholder="Password" id="rPassword" required=" ">
+                    <input type="password" name="rPassword" placeholder="Confirm Password" id="rPassword1" required=" ">
                     <tr>
-                        <td>性别</td>
+                        <label id="rSex">性别:</label>
                         <td>
                             <input type="radio" value="男" name="rSex" required=" " class="radio">男
                             <input type="radio" value="女" name="rSex" required=" " class="radio">女
@@ -38,8 +38,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <td>生日</td>
                         <td><input type="date" id="rBirthday" class="date-picker" required=" "></td>
                     </tr>
-                    <input type="email" name="rContact" placeholder="联系方式" required=" ">
-                    <input type="email" name="rEmail" placeholder="Email" required=" ">
+                    <input type="email" name="rContact" id="rContact" placeholder="联系方式" required=" ">
+                    <input type="email" name="rEmail" id="rEmail" placeholder="Email" required=" ">
                     <div class="check">
                         <label class="checkbox"><input type="checkbox" name="checkbox" checked><i> </i>i agree to the <span>terms of services</span></label>
                     </div>

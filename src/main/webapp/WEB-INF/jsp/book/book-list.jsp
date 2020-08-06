@@ -17,19 +17,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/font.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/xadmin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/kkpager_orange.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/bootstrap.min.css">
     <script type="text/javascript"
-            src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+            src="${pageContext.request.contextPath}/static/js/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/xadmin.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/kkpager.min.js"></script>
-    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
-    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/bootstrap.min.js"></script>
     <![endif]-->
 </head>
 
@@ -57,17 +55,17 @@
     <xblock>
         <span class="x-right" style="line-height: 40px">共有数据：${bnum} 条</span>
     </xblock>
-        <button class="layui-btn"
-                onclick="x_admin_show('添加用户','bc/add.do',500,500)">
-            <i class="layui-icon">&#xe608;</i>添加
-        </button>
+    <button class="layui-btn"
+            onclick="addWin()">
+        <i class="layui-icon">&#xe608;</i>添加
+    </button>
     <table class="layui-table">
         <thead>
         <tr>
             <th>编号</th>
             <th>书名</th>
             <th>作者</th>
-            <th>价格</th>
+            <th>出版社</th>
             <th>出版时间</th>
             <th>库存量</th>
             <th colspan="2">操作</th>
@@ -85,24 +83,80 @@
     <a href="javascript:void(0)" onclick="endPage()" class="btn btn-success btn-sm">尾页</a>
     <!-- end 分页 -->
 </div>
+<div class="modal fade" id="one" style="top:200px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--头部-->
+            <div class="modal-header" style="background-color: green; height: 20px;">
+            </div>
+            <div class="modal-body">
+                <table class="table" border="0">
+                    <tr>
+                        <td><input type="hidden" id="tId"></td>
+                    </tr>
+                    <tr>
+                        <td>书名</td>
+                        <td><input type="text" id="tName"></td>
+                    </tr>
+                    <tr>
+                        <td>作者</td>
+                        <td>
+                            <input type="text" id="tAuthor" name="tAuthor">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>价格</td>
+                        <td>
+                            <input type="text" id="tPress" name="tPress">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>出版时间</td>
+                        <td>
+                            <input type="date" id="tPublication" name="tPublication">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>库存</td>
+                        <td>
+                            <input type="text" id="tInventory" name="tInventory">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#fd8080" id="info"></span></td>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-success btn-sm" onclick="save()">保存
+                            </button>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     /*用户-删除*/
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
             $.ajax({
-                type: "post",
-                url:"${pageContext.request.contextPath}/bc/del.ajax?id="+id,
-                dataType: "json",
-                success:function (info) {
-                    if(info=="success"){
+                type: "get",
+                url: "${pageContext.request.contextPath}/bc/del.ajax?id=" + id,
+                dataType: "text",
+                success: function (info) {
+                    if (info == "success") {
                         //发异步删除数据
                         layer.msg('已删除!', {
                             icon: 1,
                             time: 500
                         });
+                        load(1);
                     }
                 },
-                error:function () {
+                error: function () {
+                    alert("ajax请求失败")
                 }
             })
         });
@@ -143,13 +197,90 @@
                         "<td>" + data.list[i].tPress + "</td>" +
                         "<td>" + new Date(data.list[i].tPublication).format("yyyy-MM-dd") + "</td>" +
                         "<td>" + data.list[i].tInventory + "</td>" +
-                        "<td><a title='编辑' onclick='x_admin_show(\"编辑\",\"member-edit.html\",600,400)' href='javascript:;' > <i class='layui-icon'>&#xe642;</i> </a> " +
-                        "<a title='删除' onclick='member_del(this,"+data.list[i].tId+")' href = 'javascript:;'> <i class = 'layui-icon' > &#xe640; </i> </a> </td>" +
+                        "<td><a title='编辑' onclick='updatePage(this)' href='javascript:;' > <i class='layui-icon'>&#xe642;</i> </a> " +
+                        "<a title='删除' onclick='member_del(this," + data.list[i].tId + ")' href = 'javascript:;'> <i class = 'layui-icon' > &#xe640; </i> </a> </td>" +
                         "</tr>"
                 }
                 $("#tb").html(html)
             },
             error: function () {
+            }
+        })
+    }
+    function addWin() {
+        $("#tId").val("");
+        $("#tName").val("");
+        $("#tAuthor").val("");
+        $("#tPress").val("");
+        $("#tPublication").val("");
+        $("#tInventory").val("");
+        $("#one").modal("show");
+    }
+    function updatePage(obj) {
+        var tId = $(obj).parent().parent().find("td").eq(0).text();
+        var tName = $(obj).parent().parent().find("td").eq(1).text();
+        var tAuthor = $(obj).parent().parent().find("td").eq(2).text();
+        var tPress = $(obj).parent().parent().find("td").eq(3).text();
+        var tPublication = $(obj).parent().parent().find("td").eq(4).text();
+        var tInventory = $(obj).parent().parent().find("td").eq(5).text();
+
+        //显示模态框
+        $("#one").modal("show");
+
+        $("#tId").val(tId);
+        $("#tName").val(tName);
+        $("#tAuthor").val(tAuthor);
+        $("#tPress").val(tPress);
+        $("#tPublication").val(tPublication);
+        $("#tInventory").val(tInventory);
+    }
+
+    function save() {
+        var tId = $("#tId").val();
+        var tName = $("#tName").val();
+        var tAuthor = $("#tAuthor").val();
+        var tPress = $("#tPress").val();
+        var tPublication = $("#tPublication").val();
+        var tInventory = $("#tInventory").val();
+        var params;
+        var url;
+        if (tId != "") {
+            url = "${pageContext.request.contextPath}/bc/bookUpdate.ajax"
+            //构架js对象
+            params = {
+                "tId": tId,
+                "tName": tName,
+                "tAuthor": tAuthor,
+                "tPress": tPress,
+                "tPublication": new Date(tPublication).format("yyyy-MM-dd"),
+                "tInventory": tInventory,
+            };
+        } else {
+            url = "${pageContext.request.contextPath}/bc/bookAdd.ajax";
+            //构架js对象
+            params = {
+                "tId": tId,
+                "tName": tName,
+                "tAuthor": tAuthor,
+                "tPress": tPress,
+                "tPublication": new Date(tPublication).format("yyyy-MM-dd"),
+                "tInventory": tInventory,
+            };
+        }
+        //发送ajax请求
+        $.ajax({
+            url: url,
+            type: "get",
+            data: params,
+            dataType: "text",
+            success: function (info) {
+                if(info=="success"){
+                    $("#one").modal("hide");
+                }
+                load(1)
+            },
+            error:function () {
+                alert("ajax请求失败")
             }
         })
     }

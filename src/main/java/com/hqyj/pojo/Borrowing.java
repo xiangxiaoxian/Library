@@ -1,8 +1,12 @@
 package com.hqyj.pojo;
 
+import com.hqyj.util.MyPage;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Borrowing {
+public class Borrowing extends MyPage {
     private Integer bId;
 
     private Integer rId;
@@ -13,6 +17,25 @@ public class Borrowing {
 
     private Date bRtime;
 
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
+    private Book book;
+
+    private Reader reader;
     @Override
     public String toString() {
         return "Borrowing{" +
@@ -63,27 +86,54 @@ public class Borrowing {
         this.tId = tId;
     }
 
-    public Date getbTime() {
-        return bTime;
+    public String getbTime() {
+        if(this.bTime!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(this.bTime);
+        }
+        return "";
     }
 
-    public void setbTime(Date bTime) {
-        this.bTime = bTime;
+    public void setbTime(String bTime) throws ParseException {
+        if(bTime!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            this.bTime = sdf.parse(bTime);
+        }else{
+            this.bTime = new Date();
+        }
     }
 
-    public Date getbRtime() {
-        return bRtime;
+    public String getbRtime() {
+        if(this.bRtime!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(this.bRtime);
+        }
+        return "";
     }
 
-    public void setbRtime(Date bRtime) {
-        this.bRtime = bRtime;
+    public void setbRtime(String bRtime) throws ParseException {
+        if(bRtime!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            this.bRtime = sdf.parse(bRtime);
+        }else{
+            this.bRtime = new Date();
+        }
     }
 
-    public Date getbLimit() {
-        return bLimit;
+    public String getbLimit() {
+        if(this.bLimit!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(this.bLimit);
+        }
+        return "";
     }
 
-    public void setbLimit(Date bLimit) {
-        this.bLimit = bLimit;
+    public void setbLimit(String bLimit) throws ParseException {
+        if(bLimit!=null){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            this.bLimit = sdf.parse(bLimit);
+        }else{
+            this.bLimit = new Date();
+        }
     }
 }

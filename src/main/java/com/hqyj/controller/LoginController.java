@@ -45,15 +45,20 @@ public class LoginController {
     //注册
     @RequestMapping("regist.do")
     @ResponseBody
-    public HashMap regist(Reader reader){
+    public int regist(Reader reader){
         HashMap map=new HashMap();
         MyRealm myRealm=new MyRealm();
+        Reader reader1=rs.selectByUname(reader.getrName());
         reader.setrPassword(myRealm.m(reader.getrPassword(),reader.getrName()));
         reader.setrCredibility(100);
         reader.setrNumber(0);
-        int n=rs.regist(reader);
         //System.out.println("reader = " + reader.toString());
-        return map;
+        if (reader1!=null){
+            return 0;
+        }else {
+            int n=rs.regist(reader);
+            return n;
+        }
     }
 
     //忘记密码

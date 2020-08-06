@@ -4,12 +4,14 @@ import com.hqyj.mapper.PermissionsMapper;
 import com.hqyj.mapper.ReaderMapper;
 import com.hqyj.pojo.Permissions;
 import com.hqyj.pojo.Reader;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,8 @@ public class MyRealm extends AuthorizingRealm {
         //将token强转为UsernamePasswordToken 类型（可以通过这个类型拿到身份(用户名)）
         UsernamePasswordToken token1 = (UsernamePasswordToken)token;
         Reader r=rm.queryReaderByRName(token1.getUsername());
+        Subject s= SecurityUtils.getSubject();
+        s.getSession().setAttribute("ID",r.getrId());
         System.err.println(r);
         if (r != null) {
             //设置比对器里面的身份

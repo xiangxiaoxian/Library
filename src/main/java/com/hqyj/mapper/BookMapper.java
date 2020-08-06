@@ -18,4 +18,7 @@ public interface BookMapper {
     int updateByPrimaryKey(Book record);
 
     List<Book> selectByPage(Book book);
+    //图书信息查询
+    List<Book> selectByPa( String s);
+
 }

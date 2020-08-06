@@ -28,4 +28,6 @@ public interface ReaderMapper {
     List<Reader> selectLike(Reader r);
     //      查询所有管理员信息
     List<Reader> selectAdmin();
+
+    Reader selectByPrimaryKey01(String rName);
 }

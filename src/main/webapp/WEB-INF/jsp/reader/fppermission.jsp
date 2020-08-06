@@ -19,7 +19,7 @@
     <div class="panel-head"><strong class="icon-reorder"> 内容列表</strong></div>
     <form action="${pageContext.request.contextPath}/rc/like.do">
         <center>
-            <input type="text" class="input w50" name="rName" />
+            <input type="text" class="input w50" name="rName" value="${rName}"/>
         </center>
             <input type="submit" class="button button-little bg-blue" value="查询">
     </form>
@@ -61,11 +61,11 @@
     </table>
     <hr class="color-bar">
     <center>
-        <a href="${pageContext.request.contextPath}/rc/FPP.do?page=${xiang.first}&rId=${rId}&rName=${rName}" class="button button-little bg-green">首页</a>
-        <a href="${pageContext.request.contextPath}/rc/FPP.do?page=${xiang.prePage}&rId=${rId}&rName=${rName}" class="button button-little bg-green">上一页</a>
+        <a href="${pageContext.request.contextPath}/rc/like.do?page=${xiang.first}&rName=${rName}" class="button button-little bg-green">首页</a>
+        <a href="${pageContext.request.contextPath}/rc/like.do?page=${xiang.prePage}&rName=${rName}" class="button button-little bg-green">上一页</a>
         <a class="button button-little bg-green">第${xiang.num}页</a>
-        <a href="${pageContext.request.contextPath}/rc/FPP.do?page=${xiang.next}&rId=${rId}&rName=${rName}" class="button button-little bg-green">下一页</a>
-        <a href="${pageContext.request.contextPath}/rc/FPP.do?page=${xiang.end}&rId=${rId}&rName=${rName}" class="button button-little bg-green">尾页</a>
+        <a href="${pageContext.request.contextPath}/rc/like.do?page=${xiang.next}&rName=${rName}" class="button button-little bg-green">下一页</a>
+        <a href="${pageContext.request.contextPath}/rc/like.do?page=${xiang.end}&rName=${rName}" class="button button-little bg-green">尾页</a>
         <a class="button button-little bg-green">共${xiang.pages}页</a>
         <a class="button button-little bg-green">共${xiang.total}条数据</a>
     </center>

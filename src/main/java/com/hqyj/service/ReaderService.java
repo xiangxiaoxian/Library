@@ -1,8 +1,11 @@
 package com.hqyj.service;
 
+import com.hqyj.pojo.Borrowing;
 import com.hqyj.pojo.Reader;
 
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author admin
@@ -31,4 +34,16 @@ public interface ReaderService {
     int del(Reader r);
 
     HashMap<String, Object> queryAdmin(Reader r);
+    //查看个人信息
+    Reader seleteReaderById(int id);
+    //查询借阅未还信息
+    HashMap<String, Object> selectBwBookByrId(Borrowing borrowing, int id);
+    //查询借阅已还信息
+    HashMap<String, Object> selectBwBookByrIdjl(Borrowing borrowing, int id);
+    //修改个人信息
+    int update(Reader reader);
+    //还书
+    String huanshu(List<String> list, int reaId) throws ParseException;
+
+    Reader selectByUname(String rName);
 }

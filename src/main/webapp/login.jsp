@@ -307,11 +307,15 @@
                 <table class="table" border="0">
                     <tr>
                         <td>用户名</td>
-                        <td><input type="text" id="rName"></td>
+                        <td><input type="text" id="rName" name="rName" placeholder="用户名"></td>
                     </tr>
                     <tr>
                         <td>密码</td>
-                        <td><input type="text" id="rPassword"></td>
+                        <td><input type="text" id="rPassword" name="rPassword" placeholder="请输入"></td>
+                    </tr>
+                    <tr>
+                        <td>确认密码</td>
+                        <td><input type="text" id="rPassword1" name="rPassword1" placeholder="请再次输入"></td>
                     </tr>
                     <tr>
                         <td>性别</td>
@@ -326,11 +330,11 @@
                     </tr>
                     <tr>
                         <td>联系方式</td>
-                        <td><input type="text" id="rContact"></td>
+                        <td><input type="text" id="rContact" name="rContact" placeholder="联系方式"></td>
                     </tr>
                     <tr>
                         <td>邮箱</td>
-                        <td><input type="text" id="rEmail"></td>
+                        <td><input type="text" id="rEmail" name="rEmail" placeholder="邮箱"></td>
                     </tr>
                     <tr>
                         <td><span style="color:red" id="info1"></span></td>
@@ -396,6 +400,7 @@
     function regist() {
         var rName=$("#rName").val()
         var rPassword=$("#rPassword").val()
+        var rPassword1 =$("#rPassword1").val();
         var rSex = $("input[name='sex']:checked").val()
         var rBirthday=$("#rTime").val()
         var rContact=$("#rContact").val()
@@ -408,21 +413,44 @@
             "rContact":rContact,
             "rEmail":rEmail
         };
-        console.log(par)
-        $.ajax({
-            url:"${pageContext.request.contextPath}/regist.do",
-            data:par,
-            type:"get",
-            dataType:"json",
-            success:function (info) {
-                if (info!=""){
-                    alert("注册成功");
-                    $("#two").modal("hide");
-                }else {
-                    alert("注册失败")
+        if (rName==""){
+            alert("用户名不能为空。");
+            return false;
+        }else if (rPassword!=rPassword1) {
+            alert("两次输入密码不一致。");
+            return false;
+        }else if (rSex==""){
+            alert("性别不能为空。");
+            return false;
+        }else if (rBirthday==""){
+            alert("出生日期不能为空。");
+            return false;
+        }else if (rContact==""){
+            alert("联系方式不能为空。");
+            return false;
+        }else if (rEmail==""){
+            alert("email不能为空。");
+            return false;
+        }else {
+            $.ajax({
+                url:"${pageContext.request.contextPath}/regist.do",
+                data:par,
+                type:"get",
+                dataType:"json",
+                success: function (data) {
+                    if (data == 0) {
+                        alert("该用户名已经存在，请重新更换用户名");
+                    } else {
+                        alert("注册成功");
+                        $("#two").modal("hide");
+                    }
+                },
+                error: function () {
+                    alert("注册失败");
                 }
-            }
-        })
+
+            })
+        }
     }
     function forgotPassword() {
         $.ajax({

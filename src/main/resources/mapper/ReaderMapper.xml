@@ -155,7 +155,7 @@
         r_id = #{rId,jdbcType=INTEGER} and
       </if>
       <if test="rName!=null and rName!='' and rName!='null'">
-        r_name = #{rName,jdbcType=VARCHAR} and
+        r_name like concat(concat('%',#{rName,jdbcType=VARCHAR}),'%') and
       </if>
     </trim>
     ORDER BY r_credibility asc
@@ -188,6 +188,13 @@
       r_permissions
       INNER JOIN reader ON reader.r_id = r_permissions.r_id
       WHERE r_permissions.p_id = 1
+  </select>
+  <!--  判断用户名是否已经存在-->
+  <select id="selectByPrimaryKey01" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from reader
+    where r_name = #{rName,jdbcType=VARCHAR}
   </select>
 
 </mapper>
